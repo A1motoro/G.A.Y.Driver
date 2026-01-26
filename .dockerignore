@@ -25,7 +25,7 @@ venv/
 ENV/
 env/
 .venv/
-# 注意：uv.lock 应该提交到仓库以确保依赖一致性
+.uv/
 
 # IDE
 .vscode/
@@ -63,3 +63,16 @@ Thumbs.db
 *.tmp
 *.temp
 .cache/
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 文档（可选，如果需要可以移除）
+docs/

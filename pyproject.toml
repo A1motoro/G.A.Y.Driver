@@ -1,0 +1,38 @@
+[project]
+name = "gay-driver"
+version = "0.1.0"
+description = "无红绿灯路口自动驾驶AI"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # 基础依赖将在开发过程中添加
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+    "flake8>=6.0.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = []
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true

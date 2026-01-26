@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gay-driver
+    volumes:
+      # 挂载源代码以便开发时实时修改
+      - ./src:/app/src
+      - ./config:/app/config
+      # 挂载数据和模型目录（如果需要）
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    # 如果需要 GPU 支持，取消下面的注释
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+    stdin_open: true
+    tty: true
+    # 覆盖默认命令，进入交互式 shell
+    command: /bin/bash
+
+  # 开发环境服务（包含开发依赖）
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gay-driver-dev
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
+    # 启动时安装开发依赖
+    command: >
+      bash -c "
+        uv sync --dev &&
+        /bin/bash
+      "
+    profiles:
+      - dev
