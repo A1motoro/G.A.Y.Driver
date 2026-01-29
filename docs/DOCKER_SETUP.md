@@ -170,6 +170,41 @@ deploy:
 
 ## 故障排除
 
+### uv 在 IDE 终端中找不到（但系统终端可以）
+
+**问题现象**：在 IDE（如 VSCode/Cursor）的终端中运行 `uv --version` 报错，但在直接打开的 PowerShell 中可以运行。
+
+**原因**：IDE 终端启动时可能没有加载最新的环境变量 PATH。
+
+**解决方案**：
+
+1. **重启 IDE**（最简单）
+   - 完全关闭 IDE 并重新打开
+   - IDE 会重新加载系统环境变量
+
+2. **手动刷新环境变量**（在 IDE 终端中）
+   ```powershell
+   # 刷新 PATH 环境变量
+   $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+   
+   # 验证
+   uv --version
+   ```
+
+3. **使用改进的初始化脚本**
+   - 运行 `.\scripts\setup-env.ps1`
+   - 脚本会自动查找 uv 并添加到当前会话的 PATH
+
+4. **手动添加 uv 到 PATH**（永久解决）
+   ```powershell
+   # 查找 uv 安装位置（通常在以下位置之一）
+   # %USERPROFILE%\.cargo\bin\uv.exe
+   # %LOCALAPPDATA%\uv\uv.exe
+   
+   # 添加到系统 PATH（需要管理员权限）
+   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Users\YourName\.cargo\bin", "User")
+   ```
+
 ### uv 安装失败
 
 ```bash

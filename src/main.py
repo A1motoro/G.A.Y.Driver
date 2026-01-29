@@ -1,15 +1,9 @@
 """
 G.A.Y.Driver - 无红绿灯路口自动驾驶AI
-主入口文件
+主入口文件（兼容性入口点）
 """
 
-
-def main():
-    """主函数"""
-    print("G.A.Y.Driver - 无红绿灯路口自动驾驶AI")
-    print("项目已成功启动！")
-    print("开始开发你的自动驾驶系统吧！")
-
+from gay_driver.main import main
 
 if __name__ == "__main__":
     main()

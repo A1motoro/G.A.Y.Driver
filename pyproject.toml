@@ -5,7 +5,37 @@ description = "无红绿灯路口自动驾驶AI"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    # 基础依赖将在开发过程中添加
+    # 深度学习框架
+    "torch>=2.0.0",           # PyTorch - 深度学习核心框架
+    "torchvision>=0.15.0",    # 计算机视觉工具和预训练模型
+    
+    # 计算机视觉和图像处理
+    "opencv-python>=4.8.0",  # OpenCV - 图像处理和计算机视觉
+    "pillow>=10.0.0",         # PIL - 图像处理库
+    
+    # 数值计算和数据处理
+    "numpy>=1.24.0",          # 数值计算基础库
+    "pandas>=2.0.0",          # 数据处理和分析
+    
+    # 可视化
+    "matplotlib>=3.7.0",      # 基础绘图库
+    "plotly>=5.14.0",         # 交互式可视化（用于3D场景展示）
+    "seaborn>=0.12.0",        # 统计可视化
+    
+    # 强化学习（用于训练决策模型）
+    "gymnasium>=0.28.0",      # 强化学习环境（原 gym）
+    "stable-baselines3>=2.0.0",  # 强化学习算法实现
+    
+    # 训练监控和日志
+    "tensorboard>=2.13.0",    # TensorBoard - 训练可视化
+    "wandb>=0.15.0",          # Weights & Biases - 实验跟踪（可选但推荐）
+    
+    # 配置和工具
+    "pyyaml>=6.0",            # YAML配置文件解析
+    "tqdm>=4.65.0",           # 进度条显示
+    
+    # 科学计算
+    "scipy>=1.10.0",          # 科学计算库（信号处理、优化等）
 ]
 
 [project.optional-dependencies]
@@ -19,6 +49,11 @@ dev = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# For src-layout, hatchling will auto-detect packages in src/
+# The package name is gay_driver (underscore) matching the directory name
+# No need to specify packages explicitly - hatchling will find src/gay_driver automatically
 
 [tool.ruff]
 line-length = 100
@@ -36,3 +71,27 @@ target-version = ["py310"]
 python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
+
+[tool.uv]
+# uv 虚拟环境配置
+# 虚拟环境位置：项目根目录下的 .venv（默认）
+# uv 会自动创建和管理虚拟环境
+
+# 明确指定虚拟环境位置（可选，默认就是 .venv）
+# 如果需要在其他位置，可以取消注释并修改
+# venv-location = ".venv"
+
+# Python 版本要求（从 project.requires-python 继承）
+# 如果需要指定特定 Python 版本，可以取消注释
+# python-version = "3.10"
+
+# 链接模式：设置为 copy 以避免跨文件系统硬链接警告
+# 当缓存目录和虚拟环境在不同文件系统上时，硬链接不可用
+# 使用 copy 模式可以消除警告，虽然可能稍慢但更稳定
+link-mode = "copy"
+
+# PyPI 镜像源配置（使用清华镜像源加速下载）
+[[tool.uv.index]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true

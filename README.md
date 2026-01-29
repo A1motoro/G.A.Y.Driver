@@ -32,8 +32,12 @@ G.A.Y.Driver/
 - **[完整协作流程指南](docs/COLLABORATION.md)** - 详细的Git和GitHub操作教程
 - **[快速参考卡](docs/QUICK_REFERENCE.md)** - 常用命令和规则速查
 - **[分支保护配置指南](docs/BRANCH_PROTECTION.md)** - GitHub分支保护规则配置说明
-- **[Docker 和 uv 环境配置](docs/DOCKER_SETUP.md)** - Docker 和 uv 使用指南
+- **[环境配置完整指南](docs/ENVIRONMENT_SETUP.md)** - 从安装到配置的详细教程（推荐新手）
+- **[UV PATH 配置指南](docs/UV_SETUP.md)** - 解决 IDE 集成终端找不到 uv 的问题
+- **[Docker 配置说明](docs/DOCKER_SETUP.md)** - Docker 详细使用说明
+- **[项目依赖说明](docs/DEPENDENCIES.md)** - 各依赖包的用途和说明
 - **[终端自动激活虚拟环境](docs/AUTO_ACTIVATE.md)** - 配置终端自动激活虚拟环境
+- **[虚拟环境问题排查](docs/VENV_TROUBLESHOOTING.md)** - 常见问题解决方案
 
 ### 📋 文档内容
 
@@ -77,123 +81,57 @@ git checkout -b feature/your-feature-name
 
 ## 环境配置
 
-### 使用 uv 管理依赖（本地开发）
+### 📖 完整配置指南
 
-项目使用 [uv](https://github.com/astral-sh/uv) 作为 Python 包管理器，提供快速且统一的依赖管理。
+**👉 [环境配置完整指南](docs/ENVIRONMENT_SETUP.md)** - 从安装 uv、Docker 到配置环境的详细教程
 
-#### 安装 uv
+### 快速开始
 
-```bash
-# Windows (PowerShell)
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+如果你已经安装了 uv 和 Docker，可以快速配置：
 
-# macOS/Linux
-curl -LsSf https://astral.sh/uv/install.sh | sh
+```powershell
+# 1. 进入项目目录
+cd d:\Tide\G.A.Y.Driver
+
+# 2. 创建虚拟环境并安装依赖
+uv sync --dev
+
+# 3. 运行代码
+uv run python src/main.py
 ```
 
-#### 本地开发设置
+### 主要特性
 
-```bash
-# 同步依赖（创建虚拟环境并安装所有依赖）
-uv sync
+- ✅ **uv 包管理**：快速、可靠的 Python 依赖管理
+- ✅ **虚拟环境隔离**：`.venv/` 目录，不污染本机环境
+- ✅ **清华镜像源**：已配置，自动加速下载
+- ✅ **Docker 支持**：统一开发和生产环境
+- ✅ **依赖锁定**：`uv.lock` 确保团队环境一致
 
-# 激活虚拟环境
-source .venv/bin/activate  # Linux/macOS
-# 或
-.venv\Scripts\activate  # Windows
+### 常用命令
+
+```powershell
+# 安装依赖
+uv sync --dev              # 安装所有依赖（包括开发工具）
 
 # 运行代码
-uv run python src/main.py
+uv run python src/main.py   # 自动使用虚拟环境
 
-# 添加新依赖
-uv add package-name
+# 添加依赖
+uv add package-name         # 添加运行依赖
+uv add --dev package-name  # 添加开发依赖
 
-# 添加开发依赖
-uv add --dev package-name
-
-# 更新依赖
-uv sync --upgrade
+# Docker 开发
+docker-compose --profile dev up -d dev  # 启动开发环境
+docker-compose exec dev bash            # 进入容器
 ```
 
-#### 配置终端自动激活虚拟环境（可选）
+### 相关文档
 
-为了方便开发，可以配置终端在进入项目目录时自动激活虚拟环境：
-
-**Windows PowerShell:**
-```powershell
-# 运行配置脚本
-.\scripts\setup-auto-activate.ps1
-
-# 重新加载配置（或重新打开 PowerShell）
-. $PROFILE
-```
-
-**Linux/macOS (Bash/Zsh):**
-```bash
-# 运行配置脚本
-chmod +x scripts/setup-auto-activate.sh
-./scripts/setup-auto-activate.sh
-
-# 重新加载配置（或重新打开终端）
-source ~/.bashrc  # 或 source ~/.zshrc
-```
-
-配置后，当你在项目目录或其子目录中打开终端时，虚拟环境会自动激活。
-
-**手动配置（如果脚本不工作）:**
-
-- **PowerShell**: 编辑 `$PROFILE`，添加 `scripts/auto-activate.ps1` 的内容
-- **Bash**: 编辑 `~/.bashrc`，添加 `scripts/auto-activate.sh` 的内容
-- **Zsh**: 编辑 `~/.zshrc`，添加 `scripts/auto-activate.sh` 的内容
-
-### 使用 Docker（推荐用于服务器部署）
-
-项目包含完整的 Docker 配置，便于在服务器上运行。
-
-#### 构建和运行
-
-```bash
-# 构建 Docker 镜像
-docker build -t gay-driver .
-
-# 运行容器（交互式）
-docker run -it --rm gay-driver
-
-# 运行容器（后台）
-docker run -d --name gay-driver gay-driver
-```
-
-#### 使用 Docker Compose（推荐）
-
-```bash
-# 启动应用容器
-docker-compose up -d
-
-# 进入容器
-docker-compose exec app bash
-
-# 启动开发环境（包含开发依赖）
-docker-compose --profile dev up dev
-
-# 查看日志
-docker-compose logs -f
-
-# 停止容器
-docker-compose down
-```
-
-#### 挂载卷说明
-
-Docker Compose 配置会自动挂载以下目录：
-- `./src` → `/app/src` - 源代码（开发时实时修改）
-- `./config` → `/app/config` - 配置文件
-- `./data` → `/app/data` - 数据集
-- `./models` → `/app/models` - 模型文件
-- `./logs` → `/app/logs` - 训练日志
-
-#### GPU 支持（如果需要）
-
-如果服务器有 NVIDIA GPU，在 `docker-compose.yml` 中取消 GPU 相关注释，并确保安装了 [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)。
+- **[环境配置完整指南](docs/ENVIRONMENT_SETUP.md)** - 从零开始的详细教程
+- **[UV PATH 配置指南](docs/UV_SETUP.md)** - 解决 IDE 找不到 uv 的问题
+- **[Docker 配置说明](docs/DOCKER_SETUP.md)** - Docker 详细使用说明
+- **[终端自动激活虚拟环境](docs/AUTO_ACTIVATE.md)** - 配置自动激活
 
 ## 许可证
 

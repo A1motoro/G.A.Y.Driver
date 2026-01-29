@@ -124,8 +124,40 @@ git checkout -- 文件名
 
 ---
 
+---
+
+## 🐍 环境管理快速参考
+
+### 首次设置
+
+```bash
+# Windows (PowerShell)
+.\scripts\setup-env.ps1
+
+# macOS/Linux
+chmod +x scripts/setup-env.sh
+./scripts/setup-env.sh
+```
+
+### 常用命令
+
+| 操作 | 命令 |
+|------|------|
+| 创建/更新环境 | `uv sync --dev` |
+| 运行代码 | `uv run python src/main.py` |
+| 添加依赖 | `uv add package-name` |
+| 添加开发依赖 | `uv add --dev package-name` |
+| 更新依赖 | `uv sync --upgrade` |
+| 锁定版本 | `uv lock` |
+| 激活环境 | `.venv\Scripts\activate` (Windows)<br>`source .venv/bin/activate` (Linux/macOS) |
+
+**提示**：使用 `uv run` 无需手动激活虚拟环境！
+
+---
+
 ## 📚 需要帮助？
 
 1. 查看 [完整协作指南](COLLABORATION.md)
-2. 咨询项目维护者
-3. Git官方文档：https://git-scm.com/doc
+2. 查看 [Docker 和 uv 环境配置](DOCKER_SETUP.md)
+3. 咨询项目维护者
+4. Git官方文档：https://git-scm.com/doc
