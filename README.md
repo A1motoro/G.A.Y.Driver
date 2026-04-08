@@ -49,12 +49,53 @@ python -m pip install -r requirements.txt
 deactivate
 ```
 
+## 配置虚拟环境（macOS）
+
+在终端中进入项目根目录 `G.A.Y.Driver`，使用系统自带的 **Python 3**（若命令为 `python3`，下面请将 `python` 一律换成 `python3`）。
+
+### 使用内置 venv（推荐）
+
+```bash
+# 创建虚拟环境（目录名可自定，常用 .venv）
+python3 -m venv .venv
+
+# 激活虚拟环境（zsh / bash 通用）
+source .venv/bin/activate
+```
+
+激活后，提示符前会出现 `(.venv)`。
+
+### 安装依赖
+
+虚拟环境保持激活，仍在项目根目录：
+
+```bash
+python -m pip install -U pip
+python -m pip install -r requirements.txt
+```
+
+### 退出虚拟环境
+
+```bash
+deactivate
+```
+
+> **说明**：若尚未安装 Python 3，可先通过 [python.org](https://www.python.org/downloads/macos/) 或 Homebrew（`brew install python`）安装。本项目依赖 **pygame 窗口渲染**，首次运行需允许终端/Python 访问屏幕（系统设置 → 隐私与安全性）。
+
 ## 运行演示
 
-确保已激活虚拟环境并安装好依赖：
+确保已激活虚拟环境并安装好依赖。
+
+**Windows（PowerShell）**
 
 ```powershell
 python src\gay_driver\demo_intersection.py
+```
+
+**macOS / Linux（bash / zsh）**
+
+```bash
+python src/gay_driver/demo_intersection.py
 ```
 
 会弹出窗口渲染 `intersection-v0` 场景；智能体动作为随机采样，用于验证环境是否正常工作。
