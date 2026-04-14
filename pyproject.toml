@@ -1,0 +1,14 @@
+[project]
+name = "gay-driver"
+version = "0.1.0"
+description = "基于 Gymnasium 与 highway-env 的十字路口驾驶环境演示"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "gymnasium",
+    "highway-env",
+    "pygame",
+]
+
+[tool.uv]
+package = false
