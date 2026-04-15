@@ -8,6 +8,8 @@ dependencies = [
     "gymnasium",
     "highway-env",
     "pygame",
+    "torch>=2.1",
+    "stable-baselines3>=2.3.0",
 ]
 
 [tool.uv]
